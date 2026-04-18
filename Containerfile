@@ -77,3 +77,34 @@ RUN \
 RUN systemctl enable greetd.service && \
     systemctl enable dms-first-boot.service && \
     ostree container commit
+
+# =================================================================
+# 4. Final preparation layer - System groups + greetd fixes
+#    (No user or password created here)
+# =================================================================
+RUN <<EOF
+set -euxo pipefail
+
+echo "=== Creating missing system groups for niri / Wayland ==="
+groupadd -r audio   || true
+groupadd -r video   || true
+groupadd -r input   || true
+groupadd -r seat    || true
+groupadd -r render  || true
+groupadd -r kvm     || true
+
+echo "=== Fixing PAM and greetd configuration ==="
+authselect select local with-silent-lastlog --force || true
+
+# Make sure greetd uses a standard working PAM stack
+cp -f /etc/pam.d/login /etc/pam.d/greetd || true
+
+echo "=== Making wheel group passwordless sudo (optional but convenient) ==="
+echo '%wheel ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/wheel-nopasswd
+chmod 440 /etc/sudoers.d/wheel-nopasswd
+
+echo "=== Final preparation done ==="
+EOF
+
+# Final commit - do NOT remove this
+ostree container commit
