@@ -40,45 +40,25 @@ RUN \
   \
   # -- Single install transaction ------------------------------------
   dnf5 install -y \
-    \
-    # === Wayland compositor =======================================
     niri \
     xwayland-satellite \
-    \
-    # === DankMaterialShell (full suite) ===========================
     dms \
     quickshell \
-    \
-    # === DankGreeter — greetd-based DMS login screen ==============
-    # Pulls in greetd as a dependency automatically.
     dms-greeter \
-    \
-    # === DankLinux companion tools ================================
-    dsearch \           # fast indexed filesystem search
-    dgop \              # stateless CPU/GPU process monitor
-    cliphist \          # Wayland clipboard history
-    matugen \           # Material You wallpaper → colour theme engine
-    \
-    # === Gaming ===================================================
-    steam \             # RPMFusion-nonfree (pre-enabled in ublue base)
-    \
-    # === Session plumbing =========================================
+    dsearch \
+    dgop \
+    cliphist \
+    matugen \
+    steam \
     polkit \
-    acl \               # needed by `dms greeter sync` for ACL setup
+    acl \
     xdg-user-dirs \
     xdg-desktop-portal \
     xdg-desktop-portal-gtk \
-    \
-    # === Fonts (Material You colour extraction needs these) ========
     google-noto-fonts-common \
     google-noto-sans-fonts \
-    \
-    # === Terminal =================================================
     ghostty \
-    \
-    # === File manager =============================================
     nautilus \
-    \
   && \
   \
   # -- Create DankGreeter cache directory ---------------------------
