@@ -1,0 +1,4 @@
+# Enable DankMaterialShell user service for all users at first login.
+# dms installs its own dms.service unit; this preset ensures it starts
+# automatically without needing `dms setup` to be run manually.
+enable dms.service

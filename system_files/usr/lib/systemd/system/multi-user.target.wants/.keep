@@ -1,0 +1,4 @@
+This directory is intentionally tracked so git doesn't drop it.
+The actual multi-user.target.wants/dms-first-boot.service symlink
+is created by `systemctl enable dms-first-boot.service` in the
+Containerfile RUN layer.

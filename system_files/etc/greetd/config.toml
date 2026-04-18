@@ -1,0 +1,8 @@
+[terminal]
+vt = 1
+
+[default_session]
+# DankGreeter — DMS's own greetd-based graphical login screen.
+# Syncs wallpaper and Material You colour themes with the user session.
+user = "greeter"
+command = "dms-greeter --command niri"

@@ -1,0 +1,24 @@
+[Unit]
+Description=DankMaterialShell first-boot setup (niri config + greeter sync)
+# Run once, for the first real (UID >= 1000) user who logs in.
+ConditionPathExists=!/var/lib/dms-setup-done
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# 1. Run `dms setup` as the first human user — generates:
+#      ~/.config/niri/config.kdl  (niri config with DMS keybinds)
+#      ~/.config/dms/             (DankMaterialShell starter config)
+# 2. Run `dms greeter sync` to wire up ACLs so DankGreeter can
+#    read the user's wallpaper and colour theme from their home dir.
+ExecStart=/usr/bin/bash -c '\
+  uid=$(awk -F: '"'"'$3>=1000 && $3<65000 {print $3; exit}'"'"' /etc/passwd); \
+  user=$(id -un "$uid"); \
+  runuser -u "$user" -- dms setup --compositor niri --non-interactive; \
+  runuser -u "$user" -- dms greeter sync; \
+  touch /var/lib/dms-setup-done'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
